@@ -18,14 +18,18 @@ additional_foreignkey_attributes = {
 }
 
 
-def check_unacceptable_symbols(string):
+def check_unacceptable_symbols(string: str):
     processed_str = re.match("^[A-Za-z0-9_-]*$", string)
     if processed_str is None:
         raise ValueError("Строка должна содержать только символы кириллицы, латиницы, дефис или нижнее подчеркивание")
 
 
-def transliteration_and_validation(string):
-    new_str = translit(string, 'ru', reversed=True)
+def transliteration_and_validation(string: str, struct: str) -> str:
+    if struct == "model":
+        edited_str = string.title().replace(" ", "")
+    elif struct == "field":
+        edited_str = string.lower().replace(" ", "_")
+    new_str = translit(edited_str, 'ru', reversed=True)
     check_unacceptable_symbols(new_str)
     return new_str
 
@@ -39,10 +43,10 @@ with open(os.path.join(os.path.dirname(__file__), "dynamic.json"), "r", encoding
             if field["type"] == "foreignkey":
                 attrs["on_delete"] = additional_foreignkey_attributes[attrs["on_delete"]]
 
-            field_name = transliteration_and_validation(field["name"])
+            field_name = transliteration_and_validation(field["name"], struct="field")
             model_fields.update({field_name: allowed_type_field[field["type"]](**attrs)})
 
-            model_name = transliteration_and_validation(obj["model"])
+            model_name = transliteration_and_validation(obj["model"], struct="model")
 
         model = type(
             model_name,
