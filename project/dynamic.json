@@ -1,0 +1,37 @@
+[
+  {
+    "model": "Well",
+    "fields": [
+      {
+        "name": "name",
+        "type": "charfield",
+        "attrs": {
+          "max_length": 255
+        }
+      },
+      {
+        "name": "well_cluster",
+        "type": "foreignkey",
+        "attrs": {
+          "to": "WellCluster",
+          "on_delete": "CASCADE",
+          "related_name": "wells",
+          "blank": true,
+          "null": true
+        }
+      }
+    ]
+  },
+  {
+    "model": "WellCluster",
+    "fields": [
+      {
+        "name": "name",
+        "type": "charfield",
+        "attrs": {
+          "max_length": 255
+        }
+      }
+    ]
+  }
+]
