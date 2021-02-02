@@ -1,9 +1,9 @@
 [
   {
-    "model": "Well",
+    "model": "Скважина",
     "fields": [
       {
-        "name": "name",
+        "name": "название",
         "type": "charfield",
         "attrs": {
           "max_length": 255
